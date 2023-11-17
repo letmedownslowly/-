@@ -1,10 +1,11 @@
 <script setup>
 import { ref } from "vue";
-import { LoginAPI } from "@/apis/user";
 import "element-plus/theme-chalk/el-message.css";
 import { ElMessage } from "element-plus";
-import {useRouter} from 'vue-router'
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user";
 
+const UserStore = useUserStore();
 // 表单校验（账户名+密码）
 
 // 1.准备表单对象
@@ -39,7 +40,7 @@ const rules = {
 
 // 3.获取form实例做统一校验
 const formRef = ref(null);
-const router =  useRouter()
+const router = useRouter();
 const doLogin = () => {
   const { account, password } = form.value;
   // 调用实例方法
@@ -49,12 +50,11 @@ const doLogin = () => {
     // 以valid做判断条件 如果通过校验才进行登录逻辑
     if (valid) {
       // TODO LOGIN
-      const res = await LoginAPI({ account, password });
-      console.log(res);
+      await UserStore.getUserInfo({ account, password });
       // 提示用户
       ElMessage({ type: "sucess", message: "登录成功" });
       // 跳转到首页
-       router.replace({path:'/'})
+      router.replace({ path: "/" });
     }
   });
 };
