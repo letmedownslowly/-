@@ -3,7 +3,7 @@ import '@/styles/common.scss'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 import router from './router'
 
@@ -18,8 +18,11 @@ import {componentPlugin} from '@/components/index'
 //     console.log(res);
 // })
 const app = createApp(App)
+const pinia = createPinia()
 
-app.use(createPinia())
+// 注册持久化插件
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
 app.use(router)
 app.use(componentPlugin)
 app.use(lazyPlugin)
